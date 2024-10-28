@@ -22,6 +22,18 @@ class DifferentialLine {
 
     }
 
+    UpdateValues(desSeparation, cohesionRatio, edLen){
+
+        this.desiredSeparation = desSeparation;
+        this.cohesionratio     = cohesionRatio;
+        this.edgeLength        = edLen;
+
+        this.desiredSeparationSq = this.desiredSeparation * this.desiredSeparation;
+        this.edgeLengthSq = edLen * edLen;
+        this.searchRadius = edLen * 5;
+
+    }
+
     AddNode(node){
         this.nodes.push(node);
     }

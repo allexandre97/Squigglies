@@ -14,6 +14,8 @@ let _desiredSeparation;
 let _separationCohesionRation;
 let _maxEdgeLen;
 
+let _restart;
+
 // Cache configuration
 const MAX_CACHE_FRAMES = 20;
 
@@ -56,25 +58,51 @@ class OptimizedCache {
     }
 }
 
+let frame = 0;
+
+
+function resetSim(){
+    Line = new DifferentialLine(500, _maxForce, _maxSpeed, _desiredSeparation.value(), 
+                               _separationCohesionRation.value(), _maxEdgeLen.value());
+
+    let Ang = TWO_PI/N;
+    let ray = 60;
+
+    for (let a = 0; a < TWO_PI; a += Ang) {
+        let x = WIDTH/2 + cos(a) * ray;
+        let y = HEIGHT/2 + sin(a) * ray;
+        Line.AddNode(new Node(x, y, _maxSpeed, _maxForce));
+    }
+
+    // Initialize cache
+    lineCache = new OptimizedCache(MAX_CACHE_FRAMES);
+
+    frame = 0;
+}
+
 function setup() {
 
-    _desiredSeparation = createSlider(1, 20, 10, 0.1);
+    _desiredSeparation = createSlider(1, 30, 10, 0);
     _desiredSeparation.position(0, HEIGHT + 10);
     let txt_sep = createDiv("Node Separation");
     txt_sep.style("color", "white");
     txt_sep.position(_desiredSeparation.x, _desiredSeparation.y+25);
 
-    _separationCohesionRation = createSlider(0.5, 1.5, 1.01, 0.01);
+    _separationCohesionRation = createSlider(0.5, 1.5, 1.01, 0);
     _separationCohesionRation.position(WIDTH/2 - _separationCohesionRation.width/2, HEIGHT + 10);
     let txt_rat = createDiv("Cohesion:Repulsion Ratio");
     txt_rat.style("color", "white");
     txt_rat.position(_separationCohesionRation.x, _separationCohesionRation.y+25);
 
-    _maxEdgeLen = createSlider(_desiredSeparation.value(), 2*_desiredSeparation.value(), 1.1*_desiredSeparation.value(), 0.01);
+    _maxEdgeLen = createSlider(0.5, 30, 11, 0);
     _maxEdgeLen.position(WIDTH - _maxEdgeLen.width, HEIGHT + 10);
     let txt_len = createDiv("Max Edge Length");
     txt_len.style("color", "white");
     txt_len.position(_maxEdgeLen.x, _maxEdgeLen.y+25);
+
+    _restart = createButton("Restart the Simulation");
+    _restart.position(WIDTH*(1+0.05), _restart.height);
+    _restart.mouseClicked(resetSim);
 
 
     Line = new DifferentialLine(500, _maxForce, _maxSpeed, _desiredSeparation.value(), 
@@ -93,10 +121,8 @@ function setup() {
     lineCache = new OptimizedCache(MAX_CACHE_FRAMES);
 
     createCanvas(WIDTH, HEIGHT);
-    noLoop();
+    // noLoop();
 }
-
-let frame = 0;
 
 function draw() {
 
@@ -109,10 +135,7 @@ function draw() {
     }
 
     frame++;
+    
+    Line.UpdateValues(_desiredSeparation.value(), _separationCohesionRation.value(), _maxEdgeLen.value());
 
-    Line.desiredSeparation = _desiredSeparation.value();
-    Line.cohesionratio     = _separationCohesionRation.value();
-    Line.edgeLength        = _maxEdgeLen.value();
-
-    console.log(Line.desiredSeparation, Line.cohesionratio, Line.edgeLength);
 }
