@@ -2,14 +2,7 @@ class DifferentialLine {
     constructor(maxNodes, maxForce, maxSpeed, desSeparation, cohesionRatio, edLen) {
 
         // Pre-calculate frequently used values
-        this.desiredSeparationSq = desSeparation * desSeparation;
-        this.edgeLengthSq = edLen * edLen;
-        this.searchRadius = edLen * 5;
-        
-        // Pre-allocate arrays
-        this.forces = new Array(maxNodes);
-        this.tempVectors = new Array(maxNodes).fill().map(() => createVector(0, 0));
-        
+
         this.nodes             = [];
         this.maxNodes          = maxNodes;
         this.maxForce          = maxForce;
@@ -17,6 +10,16 @@ class DifferentialLine {
         this.desiredSeparation = desSeparation;
         this.cohesionratio     = cohesionRatio;
         this.edgeLength        = edLen;
+
+        this.desiredSeparationSq = this.desiredSeparation * this.desiredSeparation;
+        this.edgeLengthSq = edLen * edLen;
+        this.searchRadius = edLen * 5;
+        
+        // Pre-allocate arrays
+        this.forces = new Array(maxNodes);
+        this.tempVectors = new Array(maxNodes).fill().map(() => createVector(0, 0));
+        
+
     }
 
     AddNode(node){
