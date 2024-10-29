@@ -3,12 +3,9 @@ const HEIGHT = 720;
 
 let Line;
 
-let N = 50;
-let _maxForce = 0.2;
-let _maxSpeed = 2;
-// let _desiredSeparation = 10;
-// let _separationCohesionRation = 0.4;
-// let _maxEdgeLen = 10.5;
+const N = 50;
+const _maxForce = 0.2;
+const _maxSpeed = 2;
 
 let _desiredSeparation;
 let _separationCohesionRation;
@@ -17,49 +14,9 @@ let _maxEdgeLen;
 let _restart;
 
 // Cache configuration
-const MAX_CACHE_FRAMES = 20;
-
-class OptimizedCache {
-    constructor(maxFrames) {
-        this.frames = [];
-        this.maxFrames = maxFrames;
-    }
-    
-    add(nodes) {
-        // Create new array of vectors for positions only
-        const positions = nodes.map(node => 
-            createVector(node.position.x, node.position.y)
-        );
-        
-        // Add to frames array
-        if (this.frames.length >= this.maxFrames) {
-            this.frames.shift(); // Remove oldest frame
-        }
-        this.frames.push(positions);
-    }
-    
-    draw() {
-        background(220);
-        
-        // Draw from oldest to newest
-        this.frames.forEach((positions, index) => {
-            const alpha = map(index, 0, this.frames.length - 1, 50, 150);
-            stroke(alpha);
-            
-            // Draw lines between positions
-            for (let i = 0; i < positions.length; i++) {
-                const next = (i + 1) % positions.length;
-                line(
-                    positions[i].x, positions[i].y,
-                    positions[next].x, positions[next].y
-                );
-            }
-        });
-    }
-}
+const MAX_CACHE_FRAMES = 100;
 
 let frame = 0;
-
 
 function resetSim(){
     Line = new DifferentialLine(500, _maxForce, _maxSpeed, _desiredSeparation.value(), 
