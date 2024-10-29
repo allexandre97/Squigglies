@@ -13,11 +13,11 @@ class Node {
     
     Update() {
         // Use SIMD-friendly operations
-        this.velocity.x += this.acceleration.x;
-        this.velocity.y += this.acceleration.y;
+        this.velocity.x += this.acceleration.x + random(-0.1, 0.1);
+        this.velocity.y += this.acceleration.y + random(-0.1, 0.1);
         
         const speedSq = this.velocity.x * this.velocity.x + 
-                       this.velocity.y * this.velocity.y;
+                        this.velocity.y * this.velocity.y;
                        
         if (speedSq > this.maxSpeedSquared) {
             const scale = this.maxSpeed / sqrt(speedSq);

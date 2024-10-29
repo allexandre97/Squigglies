@@ -67,6 +67,11 @@ class DifferentialLine {
                 break_loop = true;
                 break;
             }
+
+            else if (d < 0.25 * this.edgeLength){
+                this.nodes.splice(1, 1);
+            }
+
             n++;
         }
 
@@ -105,6 +110,7 @@ class DifferentialLine {
                 
                 if (sqDist > 0 && sqDist < this.desiredSeparationSq) {
                     const invSqrt = 1 / sqrt(sqDist);
+                    // const invSqrt = 1 / Math.pow(sqDist, 3) - 1 / Math.pow(sqDist, 6);
                     force.x -= dx * invSqrt;
                     force.y -= dy * invSqrt;
                 }

@@ -14,7 +14,7 @@ let _maxEdgeLen;
 let _restart;
 
 // Cache configuration
-const MAX_CACHE_FRAMES = 100;
+const MAX_CACHE_FRAMES = 25;
 
 let frame = 0;
 
@@ -61,7 +61,7 @@ function setup() {
     txt_rat.style("color", "white");
     txt_rat.position(_separationCohesionRation.x, _separationCohesionRation.y+25);
 
-    _maxEdgeLen = createSlider(0.5, 30, 11, 0);
+    _maxEdgeLen = createSlider(1.0, 30, 11, 0);
     vertical_spacing += _maxEdgeLen.height*3.5
     _maxEdgeLen.position(WIDTH*1.05, vertical_spacing);
     let txt_len = createDiv("Max Edge Length");
